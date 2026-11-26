@@ -31,6 +31,7 @@ from typing import Any
 from freight_agents.evals.graders import field_matches
 from freight_agents.evals.recording import RecordResult, record_cases, replay_model
 from freight_agents.llm import Model
+
 from freight_agents.tms_orders.domain import Tender
 from freight_agents.tms_orders.redteam import ATTACKER_STREET
 from freight_agents.tms_orders.synth import Location

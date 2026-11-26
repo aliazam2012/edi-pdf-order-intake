@@ -1,6 +1,7 @@
 import datetime as dt
 
 import pytest
+
 from freight_agents.tms_orders.domain import Equipment, Hazmat, Order, StopKind
 from freight_agents.tms_orders.synth import generate
 from freight_agents.tms_orders.validate import Finding, validate_order

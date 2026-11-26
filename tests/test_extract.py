@@ -1,6 +1,7 @@
 from typing import Any
 
 from freight_agents.llm import ModelTurn, ScriptedModel, ToolCall, Usage
+
 from freight_agents.tms_orders.domain import Source
 from freight_agents.tms_orders.extract import EXTRACTION, draft_of, extract_tender
 from freight_agents.tms_orders.synth import generate, render_email

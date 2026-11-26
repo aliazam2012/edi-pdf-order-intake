@@ -2,6 +2,7 @@ import json
 from pathlib import Path
 
 import pytest
+
 from freight_agents.tms_orders.evaluation import FLOORS, run_reference, write_report
 from freight_agents.tms_orders.fixtures import write_fixtures
 from freight_agents.tms_orders.redteam import ATTACKER_STREET

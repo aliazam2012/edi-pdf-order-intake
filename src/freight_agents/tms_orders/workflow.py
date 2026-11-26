@@ -39,6 +39,8 @@ from freight_agents.llm import Model, ModelTurn, ScriptedModel, ToolCall, Usage
 from freight_agents.statecore.engine import CaseEngine
 from freight_agents.statecore.machine import CaseView
 from freight_agents.statecore.store import SqliteEventStore
+from pydantic import BaseModel
+
 from freight_agents.tms_orders.domain import Order, Purpose, Source, Tender
 from freight_agents.tms_orders.edi204 import parse_204, write_990
 from freight_agents.tms_orders.extract import extract_tender
@@ -47,7 +49,6 @@ from freight_agents.tms_orders.submit import submit
 from freight_agents.tms_orders.synth import SHIPPER_ADDRESSES, Location
 from freight_agents.tms_orders.tms import HttpTms
 from freight_agents.tms_orders.validate import validate_order
-from pydantic import BaseModel
 
 ORDERS_ADDRESS = "tenders@exfl.example.com"
 Clock = Callable[[], dt.datetime]

@@ -4,10 +4,11 @@ from typing import Any
 
 import anyio
 import pytest
+from mcp import Client
+
 from freight_agents.tms_orders.cli import main
 from freight_agents.tms_orders.fixtures import write_fixtures
 from freight_agents.tms_orders.mcp_server import build_orders_server
-from mcp import Client
 
 from .conftest import World
 

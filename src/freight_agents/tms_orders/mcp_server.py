@@ -16,8 +16,9 @@ from freight_agents.agentcore.tools import Risk, Tool, ToolRegistry, strict_sche
 from freight_agents.knowledge.index import Bm25Index, Passage, SearchIn, package_corpus, search_tool
 from freight_agents.llm import ToolSpec
 from freight_agents.mcp.bridge import Route, RouteError, build_server
-from freight_agents.tms_orders.workflow import OrdersIntake
 from pydantic import BaseModel
+
+from freight_agents.tms_orders.workflow import OrdersIntake
 
 INSTRUCTIONS = (
     "Freight load tenders to TMS orders. Read a case, the replies waiting for approval, and "

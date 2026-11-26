@@ -9,10 +9,11 @@ from __future__ import annotations
 from collections.abc import Sequence
 from pathlib import Path
 
-from freight_agents.tms_orders.domain import StopKind, Tender
-from freight_agents.tms_orders.synth import EQUIPMENT_WORDS, zone_abbreviation
 from reportlab.lib.pagesizes import LETTER
 from reportlab.pdfgen import canvas
+
+from freight_agents.tms_orders.domain import StopKind, Tender
+from freight_agents.tms_orders.synth import EQUIPMENT_WORDS, zone_abbreviation
 
 
 def _facts(tender: Tender) -> list[tuple[str, str]]:

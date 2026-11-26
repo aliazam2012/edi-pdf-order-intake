@@ -28,6 +28,7 @@ from freight_agents.integrations.x12 import (
     parse_interchange,
     write_interchange,
 )
+
 from freight_agents.tms_orders.domain import (
     Equipment,
     Hazmat,

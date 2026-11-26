@@ -1,5 +1,6 @@
 import pytest
 from freight_agents.integrations.x12 import Separators, X12Error, parse_interchange
+
 from freight_agents.tms_orders.domain import Purpose, Source
 from freight_agents.tms_orders.edi204 import parse_204, write_204, write_990
 from freight_agents.tms_orders.synth import generate

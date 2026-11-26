@@ -21,10 +21,11 @@ import re
 from typing import Literal
 from zoneinfo import ZoneInfo
 
+from pydantic import BaseModel
+
 from freight_agents.tms_orders.domain import Equipment, Order, Party, Stop, StopKind
 from freight_agents.tms_orders.limits import PAYLOAD_LB
 from freight_agents.tms_orders.places import transit_days, zone_place
-from pydantic import BaseModel
 
 USPS = "https://pe.usps.com/text/pub28/28apb.htm"
 PAYLOADS = (

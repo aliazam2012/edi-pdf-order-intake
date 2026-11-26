@@ -2,31 +2,79 @@
 name = "freight-agents-tms-orders"
 version = "0.1.0"
 description = "Load tenders by EDI 204, PDF or email to validated, exactly-once TMS orders"
+readme = "README.md"
 license = "MIT"
 requires-python = ">=3.12"
 dependencies = [
     "pydantic>=2.7",
     "httpx>=0.27",
-    "freight-agents-llm",
     "freight-agents-agentcore",
-    "freight-agents-statecore",
     "freight-agents-evals",
+    "freight-agents-integrations",
     "freight-agents-knowledge",
+    "freight-agents-llm",
     "freight-agents-mcp",
+    "freight-agents-mock-kit",
     "freight-agents-mock-tms",
+    "freight-agents-statecore",
 ]
 
 [project.scripts]
 freight-orders = "freight_agents.tms_orders.cli:main"
 
+[dependency-groups]
+dev = [
+    "mypy>=1.13",
+    "pre-commit>=4",
+    "pytest>=8.3",
+    "ruff>=0.8",
+    "freight-agents-devtools",
+    "uvicorn>=0.30",
+    "reportlab>=4.2",
+    "types-reportlab>=4.2",
+]
+
+[tool.uv]
+# cryptography 49 and later publish no Intel Mac wheels; the last release with one keeps
+# that machine on a published, self-contained build.
+constraint-dependencies = [
+    "cryptography<49; sys_platform == 'darwin' and platform_machine == 'x86_64'",
+    # Everywhere else, the release with the fixes for PYSEC-2026-3552, 3553 and 3554.
+    "cryptography>=50.0.2; sys_platform != 'darwin' or platform_machine != 'x86_64'",
+]
+
 [tool.uv.sources]
-freight-agents-llm = { workspace = true }
-freight-agents-agentcore = { workspace = true }
-freight-agents-statecore = { workspace = true }
-freight-agents-evals = { workspace = true }
-freight-agents-knowledge = { workspace = true }
-freight-agents-mcp = { workspace = true }
+freight-agents-agentcore = { git = "https://github.com/aliazam2012/agent-runtime", tag = "v0.1.0", subdirectory = "packages/agentcore" }
+freight-agents-devtools = { git = "https://github.com/aliazam2012/agent-runtime", tag = "v0.1.0", subdirectory = "packages/devtools" }
+freight-agents-evals = { git = "https://github.com/aliazam2012/agent-runtime", tag = "v0.1.0", subdirectory = "packages/evals" }
+freight-agents-integrations = { git = "https://github.com/aliazam2012/agent-runtime", tag = "v0.1.0", subdirectory = "packages/integrations" }
+freight-agents-knowledge = { git = "https://github.com/aliazam2012/agent-runtime", tag = "v0.1.0", subdirectory = "packages/knowledge" }
+freight-agents-llm = { git = "https://github.com/aliazam2012/agent-runtime", tag = "v0.1.0", subdirectory = "packages/llm" }
+freight-agents-mcp = { git = "https://github.com/aliazam2012/agent-runtime", tag = "v0.1.0", subdirectory = "packages/mcp" }
+freight-agents-mock-kit = { git = "https://github.com/aliazam2012/agent-runtime", tag = "v0.1.0", subdirectory = "services/mock-kit" }
+freight-agents-statecore = { git = "https://github.com/aliazam2012/agent-runtime", tag = "v0.1.0", subdirectory = "packages/statecore" }
 freight-agents-mock-tms = { workspace = true }
+
+[tool.uv.workspace]
+members = ["services/*"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "UP", "B", "SIM", "RUF", "PT"]
+
+[tool.mypy]
+python_version = "3.12"
+strict = true
+namespace_packages = true
+explicit_package_bases = true
+warn_unreachable = true
+
+[tool.pytest.ini_options]
+testpaths = ["tests", "services/mock-tms/tests"]
+addopts = "-q --import-mode=importlib --strict-markers"
 
 [build-system]
 requires = ["hatchling>=1.25"]

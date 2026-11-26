@@ -24,8 +24,9 @@ from freight_agents.integrations.http import (
     breaker_for,
     http_client,
 )
-from freight_agents.tms_orders.domain import Order
 from pydantic import BaseModel
+
+from freight_agents.tms_orders.domain import Order
 
 __all__ = [
     "CircuitBreaker",

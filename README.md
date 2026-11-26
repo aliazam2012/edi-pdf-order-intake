@@ -1,6 +1,13 @@
-# tms-orders
+# edi-pdf-order-intake
 
-A load tender that arrives as an X12 EDI 204, a PDF rate confirmation or a plain email becomes one validated order in a TMS, exactly once, and the shipper gets a confirmation (a 990 for EDI, an email otherwise) or a decline with its reasons, after a person approves the reply.
+[![CI](https://github.com/aliazam2012/edi-pdf-order-intake/actions/workflows/ci.yml/badge.svg)](https://github.com/aliazam2012/edi-pdf-order-intake/actions/workflows/ci.yml)
+![Evaluation gate](https://img.shields.io/badge/evaluation%20gate-42%20tenders-brightgreen)
+![Python 3.12](https://img.shields.io/badge/python-3.12-blue)
+![License MIT](https://img.shields.io/badge/license-MIT-green)
+
+**Load tenders that arrive as EDI X12 204, PDF rate confirmations or plain email become one validated TMS order, exactly once: code parses EDI, the model reads only free text, and every write carries an idempotency key.**
+
+**Skills shown:** document AI (PDF and email extraction through one strict tool) · EDI X12 204 parsing and 990 writing from published partner guides · validation rules sourced from 49 CFR 172, 23 U.S.C. 127 and USPS Publication 28 · exactly-once writes over HTTP (IETF Idempotency-Key) · a resilient client (circuit breaker, rate limit, retry budget) · prompt-injection defense · evaluation on 36 tenders and 6 red-team tenders
 
 ## Table of Contents
 
@@ -10,6 +17,7 @@ A load tender that arrives as an X12 EDI 204, a PDF rate confirmation or a plain
 - [Guards](#guards)
 - [Sources](#sources)
 - [Limits](#limits)
+- [Where It Fits](#where-it-fits)
 
 ---
 
@@ -38,7 +46,7 @@ The 36 tenders include a resend of an earlier tender under a new reference, a ch
 | Submit | `submit.py`, `tms.py` | The TMS is searched by the load's fingerprint, then written with an Idempotency-Key kept across retries; a change or cancellation with no order goes to a person |
 | Reply | `workflow.py`, `edi204.write_990` | A 990 (accept A, decline D) or an email, drafted by code and held for approval |
 
-Every case is a state machine (`machine.py`): received, parsed, validated, submitted, confirmation pending, confirmed, with needs review, declining, decline pending, declined and duplicate. Running the same file again resumes the case where it stopped, so a crash or a TMS outage never repeats a step. [ADR-0009](../../docs/adr/ADR-0009-parsers-before-models.md) explains why only free text reaches the model; [ADR-0010](../../docs/adr/ADR-0010-idempotency-at-the-api.md) explains exactly-once orders.
+Every case is a state machine (`machine.py`): received, parsed, validated, submitted, confirmation pending, confirmed, with needs review, declining, decline pending, declined and duplicate. Running the same file again resumes the case where it stopped, so a crash or a TMS outage never repeats a step. [ADR-0009](docs/adr/ADR-0009-parsers-before-models.md) explains why only free text reaches the model; [ADR-0010](https://github.com/aliazam2012/agent-runtime/blob/main/docs/adr/ADR-0010-idempotency-at-the-api.md) explains exactly-once orders.
 
 ## Run It
 
@@ -53,7 +61,7 @@ uv run freight-orders eval                 # the golden and red-team sets
 uv run freight-orders mcp                  # read-only tools over MCP on stdio
 ```
 
-`--tms-url` points at a running TMS instead of the in-process [mock](../../services/mock-tms/). `run --model anthropic` (with `ANTHROPIC_API_KEY`) or `--model openai --model-name <id>` reads PDF and email with a live model; live calls cost money.
+`--tms-url` points at a running TMS instead of the in-process [mock](services/mock-tms/). `run --model anthropic` (with `ANTHROPIC_API_KEY`) or `--model openai --model-name <id>` reads PDF and email with a live model; live calls cost money.
 
 ## Guards
 
@@ -74,6 +82,10 @@ The rules are summarized, with links and read dates, in this package's [order ru
 ## Limits
 
 - Tenders, companies and places are made up; the network serves 12 cities.
-- A model fooled into choosing a wrong value the document also states and the rules allow gets through validation; see the [threat model](../../docs/THREAT-MODEL.md).
+- A model fooled into choosing a wrong value the document also states and the rules allow gets through validation; see the [threat model](https://github.com/aliazam2012/agent-runtime/blob/main/docs/THREAT-MODEL.md).
 - Placard checks judge Table 1 by hazard class alone and use the order weight for the hazmat weight.
 - Scanned PDFs have no text layer and go to a person; there is no OCR.
+
+## Where It Fits
+
+Part of a family of freight agents on one [agent runtime](https://github.com/aliazam2012/agent-runtime), which holds the shared model layer, hooks, state engine and evaluation tools.

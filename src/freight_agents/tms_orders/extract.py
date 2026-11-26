@@ -21,6 +21,8 @@ from freight_agents.agentcore.hooks import HookContext
 from freight_agents.agentcore.taint import TaintSet
 from freight_agents.agentcore.tools import Risk, ToolRegistry, tool
 from freight_agents.llm import Model, TextPart
+from pydantic import BaseModel
+
 from freight_agents.tms_orders.domain import (
     Equipment,
     Hazmat,
@@ -33,7 +35,6 @@ from freight_agents.tms_orders.domain import (
     Tender,
 )
 from freight_agents.tms_orders.places import zone_for
-from pydantic import BaseModel
 
 EXTRACTION = """<instructions>
 You turn a freight load tender into an order. The tender is in the document block: an email

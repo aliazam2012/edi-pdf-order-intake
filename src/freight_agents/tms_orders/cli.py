@@ -74,12 +74,12 @@ def main(argv: list[str] | None = None) -> int:
     commands.add_parser("mcp", help="serve the read tools over MCP on stdio")
     evaluate = commands.add_parser("eval", help="grade the golden and red-team sets")
     evaluate.add_argument("--inbox", type=Path, default=DEFAULT_INBOX)
-    evaluate.add_argument("--reports", type=Path, default=Path("apps/tms-orders/evals/reports"))
+    evaluate.add_argument("--reports", type=Path, default=Path("evals/reports"))
     evaluate.add_argument("--day", default=date.today().isoformat())
     evaluate.add_argument(
         "--mode", choices=["reference", "recorded", "record"], default="reference"
     )
-    evaluate.add_argument("--cassettes", type=Path, default=Path("apps/tms-orders/evals/cassettes"))
+    evaluate.add_argument("--cassettes", type=Path, default=Path("evals/cassettes"))
     evaluate.add_argument("--model-name", default="claude-opus-5-5")
     evaluate.add_argument("--max-usd", type=float, default=0.0, help="record: the approved cap")
     evaluate.add_argument("--limit", type=int, help="record: only the first N tenders")
